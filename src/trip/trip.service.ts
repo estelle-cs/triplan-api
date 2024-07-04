@@ -7,38 +7,44 @@ export class TripService {
   private idCounter = 1;
 
 
-  createPublicTrip(tripInfo: Record<any, any>): Trip {
-  
+  createPublicTrip(userId:number,tripInfo: Record<any, any>): Trip {
+   
     const newTrip: Trip = {
       id: this.idCounter++,
       location: tripInfo.location,
       start_date: tripInfo.start_date,
-      end_date: tripInfo.end_date
+      end_date: tripInfo.end_date,
+      owner_id: tripInfo.userId,
+      transports: tripInfo.transports,
+      hostings: tripInfo.hostings,
+      activities: tripInfo.activities
     };
-  
     this.trips.push(newTrip);
     return newTrip;
   }
   
 
-  getTrips(): Trip[] {
-    return this.trips;
+  getTrips(userId:number): Trip[] {
+    return this.trips.filter(trip => trip.owner_id == userId);
   }
 
 
-  getTripById(id: number): Trip {
-    return this.trips.find(trip => trip.id === id);
-  }
+  getTripById(userId : number, id: number): Trip {
+    return this.trips.find(trip => trip.id == id && trip.owner_id == userId);}
 
-  updateTrip(id: number, tripInfo: Record<any, any>): Trip {
-    const tripIndex = this.trips.findIndex(trip => trip.id === id);
+  updateTrip(userId: number, id: number, tripInfo: Record<any, any>): Trip {
+    const tripIndex = this.trips.findIndex(trip => trip.id == id);
     if (tripIndex !== -1) {
 
         const newTrip: Trip = {
-            id: id,
-            location: tripInfo.location,
-            start_date: tripInfo.start_date,
-            end_date: tripInfo.end_date
+          id: id,
+          location: tripInfo.location,
+          start_date: tripInfo.start_date,
+          end_date: tripInfo.end_date,
+          owner_id: userId,
+          transports: '',
+          hostings: '',
+          activities: ''
         };
 
         this.trips[tripIndex] = newTrip;
@@ -47,8 +53,8 @@ export class TripService {
     return null;
   }
 
-  deleteTrip(id: number): boolean {
-    const tripIndex = this.trips.findIndex(trip => trip.id === id);
+  deleteTrip(userId:number,id: number): boolean {
+    const tripIndex = this.trips.findIndex(trip => trip.id == id);
     if (tripIndex !== -1) {
       this.trips.splice(tripIndex, 1);
       return true;

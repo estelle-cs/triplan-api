@@ -3,6 +3,7 @@ import {
     Controller,
     Get,
     Post,
+    Query,
   } from '@nestjs/common';
 import { SetMetadata } from '@nestjs/common';
 import { TripService } from './trip.service';
@@ -16,18 +17,18 @@ export class TripController {
 
     @Public()
     @Post('createPublicTrip')
-    createPublicTrip(@Body() tripInfo: Record<string, any>) {
+    createPublicTrip(@Body() tripInfo: Record<string, any>, @Body() userId: number){
         if (!tripInfo.location || !tripInfo.start_date || !tripInfo.end_date || (tripInfo.start_date > tripInfo.end_date)) {
             throw new Error('Invalid trip info');
         }
         else {
-            return this.tripService.createPublicTrip(tripInfo);
+            return this.tripService.createPublicTrip(userId, tripInfo);
         }    
     }
 
     @Public()
     @Get('getAllTrips')
-    getAllTrips() {
-        return this.tripService.getTrips();
+    getAllTrips(@Query() req){
+        return this.tripService.getTrips(req.userId);
     }
 }
