@@ -42,9 +42,9 @@ export class TripService {
           start_date: tripInfo.start_date,
           end_date: tripInfo.end_date,
           owner_id: userId,
-          transports: '',
-          hostings: '',
-          activities: ''
+          transports: tripInfo.transports,
+          hostings: tripInfo.hostings,
+          activities: tripInfo.activities
         };
 
         this.trips[tripIndex] = newTrip;

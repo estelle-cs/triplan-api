@@ -18,7 +18,10 @@ export class TripController {
     @Public()
     @Post('createPublicTrip')
     createPublicTrip(@Body() tripInfo: Record<string, any>, @Body() userId: number){
-        if (!tripInfo.location || !tripInfo.start_date || !tripInfo.end_date || (tripInfo.start_date > tripInfo.end_date)) {
+        if (!tripInfo.location || 
+            !tripInfo.start_date || 
+            !tripInfo.end_date || 
+            (tripInfo.start_date > tripInfo.end_date)) {
             throw new Error('Invalid trip info');
         }
         else {
@@ -30,5 +33,21 @@ export class TripController {
     @Get('getAllTrips')
     getAllTrips(@Query() req){
         return this.tripService.getTrips(req.userId);
+    }
+
+
+    @Public()
+    @Post('updateTrip')
+    updateTrip(@Body() tripInfo: Record<string, any>){
+        console.log("tripInfo", tripInfo);
+        if (!tripInfo.formData.location || 
+            !tripInfo.formData.start_date || 
+            !tripInfo.formData.end_date || 
+            (tripInfo.formData.start_date > tripInfo.formData.end_date)) {
+            throw new Error('Invalid trip info');
+        }
+        else {
+            return this.tripService.updateTrip(tripInfo.userId, tripInfo.id, tripInfo.formData);
+        }    
     }
 }
