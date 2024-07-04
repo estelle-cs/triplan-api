@@ -20,4 +20,14 @@ export class UsersService {
   async findOne(email: string): Promise<User | undefined> {
     return this.users.find(user => user.email === email);
   }
+
+  async register(email: string, password: string): Promise<User | undefined> {
+    const newUser = {
+      userId: this.users.length + 1,
+      email: email,
+      password: password,
+    };
+    this.users.push(newUser);
+    return newUser;
+  }
 }

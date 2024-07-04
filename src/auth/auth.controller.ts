@@ -23,6 +23,13 @@ import {
         console.log("signInDto", signInDto);
         return this.authService.signIn(signInDto.email, signInDto.password);
     }
+
+    @Public()
+    @Post('register')
+    signUp(@Body() signUpDto: Record<string, any>) {
+        console.log("signUpDto", signUpDto);
+        return this.authService.signUp(signUpDto.email, signUpDto.password);
+    }
   
     @UseGuards(AuthGuard)
     @Get('profile')
